@@ -8,6 +8,7 @@ import CompanyWindow from "./CompanyWindow";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 
+import { useMediaQuery } from 'react-responsive';
 
 type ViewId = string;
 
@@ -18,6 +19,10 @@ const MosaicPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTickers, setSelectedTickers] = useState<Record<ViewId, string>>({});
 
+  const isMobile = useMediaQuery({ query: '(max-width: 640px)' });
+  const isTablet = useMediaQuery({ query: '(max-width: 1024px)' });
+  const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' });
+
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -26,15 +31,40 @@ const MosaicPage: React.FC = () => {
         setCompanies(fetchedCompanies);
 
         if (fetchedCompanies.length >= 3) {
-          const initialNode: MosaicNode<ViewId> = {
-            direction: "row",
-            first: fetchedCompanies[0]?.ticker || "a",
-            second: {
+          let initialNode: MosaicNode<ViewId>;
+
+          if (isMobile) {
+            initialNode = {
               direction: "column",
-              first: fetchedCompanies[1]?.ticker || "b",
+              first: fetchedCompanies[0]?.ticker || "a",
+              second: {
+                direction: "column",
+                first: fetchedCompanies[1]?.ticker || "a",
+                second: fetchedCompanies[2]?.ticker || "b",
+              },
+            };
+          } else if (isTablet) {
+            initialNode = {
+              direction: "column",
+              first: {
+                direction: "row",
+                first: fetchedCompanies[0]?.ticker || "a",
+                second: fetchedCompanies[1]?.ticker || "b",
+              },
               second: fetchedCompanies[2]?.ticker || "c",
-            },
-          };
+            };
+          } else {
+            initialNode = {
+              direction: "row",
+              first: fetchedCompanies[0]?.ticker || "a",
+              second: {
+                direction: "column",
+                first: fetchedCompanies[1]?.ticker || "b",
+                second: fetchedCompanies[2]?.ticker || "c",
+              },
+            };
+          }
+
           setCurrentNode(initialNode);
           setSelectedTickers({
             [fetchedCompanies[0]?.ticker || "a"]: fetchedCompanies[0]?.ticker || "a",
@@ -53,7 +83,7 @@ const MosaicPage: React.FC = () => {
     };
 
     fetchCompanies();
-  }, []);
+  }, [isMobile, isTablet, isDesktop]);
 
   const createNode = useCallback((): ViewId => {
     let newId: ViewId;
@@ -95,12 +125,14 @@ const MosaicPage: React.FC = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <Mosaic<ViewId>
-      renderTile={renderTile}
-      initialValue={currentNode}
-      onChange={handleChange}
-      blueprintNamespace="bp5"
-    />
+    <div className="w-full h-screen">
+      <Mosaic<ViewId>
+        renderTile={renderTile}
+        initialValue={currentNode}
+        onChange={handleChange}
+        blueprintNamespace="bp5"
+      />
+    </div>
   );
 };
 
