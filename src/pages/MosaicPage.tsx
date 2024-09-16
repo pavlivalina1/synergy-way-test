@@ -3,7 +3,7 @@ import { Mosaic, MosaicNode, MosaicBranch, getLeaves } from "react-mosaic-compon
 import axios from "axios";
 
 import { CompanyData } from "../models/company-data";
-import CompanyWindow from "./CompanyWindow";
+import CompanyWindow from "../components/CompanyWindow";
 
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";

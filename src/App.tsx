@@ -1,7 +1,7 @@
 
 import './App.css';
 import 'react-mosaic-component/react-mosaic-component.css';
-import  MosaicPage  from './components/MosaicPage';
+import  MosaicPage  from './pages/MosaicPage';
 
 
 function App() {
