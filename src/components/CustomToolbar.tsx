@@ -1,6 +1,11 @@
 import React from "react";
 import { HTMLSelect } from "@blueprintjs/core";
-import { ReplaceButton, ExpandButton, SplitButton, RemoveButton } from "react-mosaic-component";
+import {
+  ReplaceButton,
+  ExpandButton,
+  SplitButton,
+  RemoveButton,
+} from "react-mosaic-component";
 import { CompanyData } from "../models/company-data";
 
 interface CustomToolbarProps {
@@ -10,13 +15,22 @@ interface CustomToolbarProps {
   onTickerChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const CustomToolbar: React.FC<CustomToolbarProps> = ({ id, companies, selectedTicker, onTickerChange }) => {
+const CustomToolbar: React.FC<CustomToolbarProps> = ({
+  id,
+  companies,
+  selectedTicker,
+  onTickerChange,
+}) => {
   return (
     <div className="flex items-center justify-between">
-      <HTMLSelect value={selectedTicker} onChange={onTickerChange} className="w-48 sm:w-auto">
+      <HTMLSelect
+        value={selectedTicker}
+        onChange={onTickerChange}
+        className="w-48 sm:w-auto"
+      >
         <option value="">Select a company...</option>
         {companies.map((company) => (
-          <option key={company.ticker} value={company.ticker} >
+          <option key={company.ticker} value={company.ticker}>
             {company.name} ({company.ticker})
           </option>
         ))}

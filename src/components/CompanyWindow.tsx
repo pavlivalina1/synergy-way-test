@@ -1,8 +1,8 @@
-import React from 'react';
-import { MosaicWindow, MosaicBranch } from 'react-mosaic-component';
-import Company from './Company';
-import CustomToolbar from './CustomToolbar';
-import { CompanyData } from '../models/company-data';
+import React from "react";
+import { MosaicWindow, MosaicBranch } from "react-mosaic-component";
+import Company from "./Company";
+import CustomToolbar from "./CustomToolbar";
+import { CompanyData } from "../models/company-data";
 
 interface CompanyWindowProps {
   id: string;
@@ -13,7 +13,14 @@ interface CompanyWindowProps {
   onTickerChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const CompanyWindow: React.FC<CompanyWindowProps> = ({ id, path, createNode, company, companies, onTickerChange }) => {
+const CompanyWindow: React.FC<CompanyWindowProps> = ({
+  id,
+  path,
+  createNode,
+  company,
+  companies,
+  onTickerChange,
+}) => {
   return (
     <MosaicWindow
       title="Company Info"

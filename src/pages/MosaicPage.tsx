@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Mosaic, MosaicNode, MosaicBranch, getLeaves } from "react-mosaic-component";
+import {
+  Mosaic,
+  MosaicNode,
+  MosaicBranch,
+  getLeaves,
+} from "react-mosaic-component";
+import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 
 import { CompanyData } from "../models/company-data";
@@ -8,20 +14,22 @@ import CompanyWindow from "../components/CompanyWindow";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 
-import { useMediaQuery } from 'react-responsive';
-
 type ViewId = string;
 
 const MosaicPage: React.FC = () => {
-  const [currentNode, setCurrentNode] = useState<MosaicNode<ViewId> | null>(null);
+  const [currentNode, setCurrentNode] = useState<MosaicNode<ViewId> | null>(
+    null
+  );
   const [companies, setCompanies] = useState<CompanyData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedTickers, setSelectedTickers] = useState<Record<ViewId, string>>({});
+  const [selectedTickers, setSelectedTickers] = useState<
+    Record<ViewId, string>
+  >({});
 
-  const isMobile = useMediaQuery({ query: '(max-width: 640px)' });
-  const isTablet = useMediaQuery({ query: '(max-width: 1024px)' });
-  const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' });
+  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  const isTablet = useMediaQuery({ query: "(max-width: 1024px)" });
+  const isDesktop = useMediaQuery({ query: "(min-width: 1025px)" });
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -67,9 +75,12 @@ const MosaicPage: React.FC = () => {
 
           setCurrentNode(initialNode);
           setSelectedTickers({
-            [fetchedCompanies[0]?.ticker || "a"]: fetchedCompanies[0]?.ticker || "a",
-            [fetchedCompanies[1]?.ticker || "b"]: fetchedCompanies[1]?.ticker || "b",
-            [fetchedCompanies[2]?.ticker || "c"]: fetchedCompanies[2]?.ticker || "c",
+            [fetchedCompanies[0]?.ticker || "a"]:
+              fetchedCompanies[0]?.ticker || "a",
+            [fetchedCompanies[1]?.ticker || "b"]:
+              fetchedCompanies[1]?.ticker || "b",
+            [fetchedCompanies[2]?.ticker || "c"]:
+              fetchedCompanies[2]?.ticker || "c",
           });
         } else {
           console.error("Not enough companies to initialize the mosaic");
@@ -101,7 +112,10 @@ const MosaicPage: React.FC = () => {
     setCurrentNode(newNode || currentNode);
   };
 
-  const handleTickerChange = (viewId: ViewId, event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleTickerChange = (
+    viewId: ViewId,
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedTickers((prev) => ({
       ...prev,
       [viewId]: event.target.value,
@@ -114,7 +128,7 @@ const MosaicPage: React.FC = () => {
         id={id}
         path={path}
         createNode={createNode}
-        company={companies.find(c => c.ticker === selectedTickers[id])}
+        company={companies.find((c) => c.ticker === selectedTickers[id])}
         companies={companies}
         onTickerChange={(event) => handleTickerChange(id, event)}
       />
